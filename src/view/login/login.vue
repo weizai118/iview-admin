@@ -3,7 +3,7 @@
 </style>
 
 <template>
-  <div class="login" @keydown.enter="handleLogin">
+  <div class="login">
     <div class="login-con">
       <Card icon="log-in" title="欢迎登录" :bordered="false">
         <div class="form-con">
@@ -16,20 +16,23 @@
 </template>
 
 <script>
-import loginForm from '_c/login-form'
+import LoginForm from '_c/login-form'
 import { mapActions } from 'vuex'
 export default {
   components: {
-    loginForm
+    LoginForm
   },
   methods: {
-    ...mapActions('user', [
-      'handleLogin'
+    ...mapActions([
+      'handleLogin',
+      'getUserInfo'
     ]),
     handleSubmit ({ userName, password }) {
       this.handleLogin({ userName, password }).then(res => {
-        this.$router.push({
-          name: 'home'
+        this.getUserInfo().then(res => {
+          this.$router.push({
+            name: this.$config.homeName
+          })
         })
       })
     }
